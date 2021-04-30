@@ -1,5 +1,6 @@
 from os import times
 from pprint import pprint
+from sprite import Sprite
 from zombie import Zombie
 from updateWeapon import Hammer
 import pygame.draw
@@ -19,7 +20,7 @@ def main():
 
     # create a surface on screen
     screen: pygame.Surface = pygame.display.set_mode((config.swidth,config.sheight))
-     
+    Sprite.default_screen = screen 
 
     #making some variables
     player = Player(0, 0, "/home/ciaran/Downloads/token_5.png", config.playerSpeed, config.playerSize)
