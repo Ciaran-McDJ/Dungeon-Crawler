@@ -6,7 +6,8 @@ import config
 class Player():
     def __init__(self):
         self.coro = self.update()
-        self.health = 1
+        self.health = config.playerHealth
+        self.size = config.playerSize
         self.xpos = 0
         self.ypos = 0
         self.sprite = Sprite(config.playerSize, config.playerImage)
@@ -37,6 +38,14 @@ class Player():
                 self.ypos += self.speed*self.movingDownClock.tick()
 
             inputs = yield
+            for enemy in inputs.enemies:
+                deltax = abs(self.xpos - enemy.xpos)
+                deltay = abs(self.ypos - enemy.ypos)
+                distance = config.pytheorem(deltax, deltay)
+                radiusesSize = (enemy.size + self.size)/2
+                if distance<radiusesSize:
+                    self.health -= enemy.damage
+
             self.sprite.draw(self.xpos, self.ypos)
 
 

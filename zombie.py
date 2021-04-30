@@ -3,14 +3,17 @@ import typing
 import pygame.transform
 import config
 import math
+import random
 
 class Zombie():
     def __init__(self, level:float):
         # TO DO give them random positions
         self.coro = self.update()
-        self.xpos = 0
-        self.ypos = 0
+        self.xpos = random.random()*config.swidth
+        self.ypos = random.random()*config.sheight
+        self.size = config.zombieSize
         self.health = config.zombieHealth
+        self.damage = config.zombieDamage
         self.sprite = Sprite(config.zombieSize, config.zombieImage)
 
     def update(self) -> config.CoroutineToUpdateEachFrameType:

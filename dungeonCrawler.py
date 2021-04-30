@@ -46,15 +46,9 @@ def main():
 
         for instance in thingsToUpdateEachFrame.copy():
             try:
-                instance.coro.send(config.Inputs(timeSinceLastRender, player.xpos, player.ypos))
+                instance.coro.send(config.Inputs(timeSinceLastRender, player.xpos, player.ypos, enemies))
             except StopIteration:
                 thingsToUpdateEachFrame.remove(instance)
-
-        # quick fix TO DO come back to this and make sure its good
-        for data in enemies:
-            print(data)
-
-
 
 
         pygame.display.update()
@@ -89,7 +83,7 @@ def main():
                     movingy = player.isMovingDown-player.isMovingUp
 
                     # code to start updating weapons
-                    instance = Hammer(1, [], player.xpos, player.ypos, movingx, movingy, screen)
+                    instance = Hammer(1, enemies, player.xpos, player.ypos, movingx, movingy, screen)
                     thingsToUpdateEachFrame.add(instance)
                     next(instance.coro, None)
                 # add zombie on z press
@@ -99,6 +93,7 @@ def main():
                     # enemies.append(new_data)
                     thingsToUpdateEachFrame.add(instance)
                     next(instance.coro, None)
+                    enemies.append(instance)
             if event.type == pygame.KEYUP:
                 # stop moving
                 if event.unicode == "a":
