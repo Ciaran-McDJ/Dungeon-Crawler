@@ -19,10 +19,14 @@ swidth = 500
 sheight = 500
 playerSpeed = unitLength(0.0003)
 playerSize = round(unitLength(0.1))
+playerImage = "/home/ciaran/Downloads/token_5.png"
+
 hammerSmashSize = round(unitLength(0.2))
 timeTillHammerGone = 1000
+hammerSmashImage = "/home/ciaran/Pictures/broken_glass_PNG52_edited.png"
 
 zombieHealth = 1
 zombieSize = round(unitLength(0.1))
 zombieSpeed = unitLength(0.0001)
+zombieImage = "/home/ciaran/Pictures/zombie.png"
 

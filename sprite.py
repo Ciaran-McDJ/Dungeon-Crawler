@@ -3,7 +3,7 @@ import pygame
 class Sprite():
     default_screen: pygame.Surface = None
     def __init__(self, size:int, imageLink:str):
-        self.image = pygame.transform.scale(pygame.image.load("/home/ciaran/Pictures/broken_glass_PNG52_edited.png"), (size,size))
+        self.image = pygame.transform.scale(pygame.image.load(imageLink), (size,size))
         self.size = size
     
     def getBlitArguments(self, xpos:float, ypos:float):

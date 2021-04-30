@@ -23,18 +23,13 @@ def main():
     Sprite.default_screen = screen 
 
     #making some variables
-    player = Player(0, 0, "/home/ciaran/Downloads/token_5.png", config.playerSpeed, config.playerSize)
-    isMovingLeft = False
-    movingLeftClock = pygame.time.Clock()
-    isMovingRight = False
-    movingRightClock = pygame.time.Clock()
-    isMovingUp = False
-    movingUpClock = pygame.time.Clock()
-    isMovingDown = False
-    movingDownClock = pygame.time.Clock()
+    player = Player()
     GameClock = pygame.time.Clock()
 
     thingsToUpdateEachFrame = set()
+    thingsToUpdateEachFrame.add(player)
+    next(player.coro, None)
+
     enemies = []
 
     # define a variable to control the main loop
@@ -44,19 +39,11 @@ def main():
     while running:
         timeSinceLastRender = GameClock.tick()
         # move player with wasd
-        if isMovingLeft == True:
-            player.xpos -= player.speed*movingLeftClock.tick()
-        if isMovingRight == True:
-            player.xpos += player.speed*movingRightClock.tick()
-        if isMovingUp == True:
-            player.ypos -= player.speed*movingUpClock.tick()
-        if isMovingDown == True:
-            player.ypos += player.speed*movingDownClock.tick()
+
 
         # put images on screen
         screen.fill("blue")
 
-        screen.blit(player.surface, [player.xpos,player.ypos])
         for instance in thingsToUpdateEachFrame.copy():
             try:
                 instance.coro.send(config.Inputs(timeSinceLastRender, player.xpos, player.ypos))
@@ -83,23 +70,23 @@ def main():
             if event.type == pygame.KEYDOWN:
                 # start moving
                 if event.unicode == "a":
-                    isMovingLeft = True
-                    movingLeftClock.tick()
+                    player.isMovingLeft = True
+                    player.movingLeftClock.tick()
                 if event.unicode == "d":
-                    isMovingRight = True
-                    movingRightClock.tick()
+                    player.isMovingRight = True
+                    player.movingRightClock.tick()
                 if event.unicode == "w":
-                    isMovingUp = True
-                    movingUpClock.tick()
+                    player.isMovingUp = True
+                    player.movingUpClock.tick()
                 if event.unicode == "s":
-                    isMovingDown = True
-                    movingDownClock.tick()
+                    player.isMovingDown = True
+                    player.movingDownClock.tick()
                 # attack
                 if event.unicode == " ":
                     # if same or different then 0, if right then 1, if left then -1
-                    movingx = isMovingRight-isMovingLeft
+                    movingx = player.isMovingRight-player.isMovingLeft
                     # if same or different then 0, if down then 1, if down then -1
-                    movingy = isMovingDown-isMovingUp
+                    movingy = player.isMovingDown-player.isMovingUp
 
                     # code to start updating weapons
                     instance = Hammer(1, [], player.xpos, player.ypos, movingx, movingy, screen)
@@ -109,20 +96,19 @@ def main():
                 if event.unicode == "z":
                     # new_data = [0, len(enemies)]
                     instance = Zombie(1)
-                    instance.update(screen, 1)
                     # enemies.append(new_data)
                     thingsToUpdateEachFrame.add(instance)
-                    next(instance.update, None)
+                    next(instance.coro, None)
             if event.type == pygame.KEYUP:
                 # stop moving
                 if event.unicode == "a":
-                    isMovingLeft = False
+                    player.isMovingLeft = False
                 if event.unicode == "d":
-                    isMovingRight = False
+                    player.isMovingRight = False
                 if event.unicode == "w":
-                    isMovingUp = False
+                    player.isMovingUp = False
                 if event.unicode == "s":
-                    isMovingDown = False
+                    player.isMovingDown = False
 
 if __name__ == "__main__":
     main()

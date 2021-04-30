@@ -11,19 +11,19 @@ class Hammer():
         self.screen = screen
         self.coro = self.update()
         self.psychYouDontExist = False
-        self.sprite = Sprite(config.hammerSmashSize, "/home/ciaran/Pictures/broken_glass_PNG52_edited.png")
+        self.sprite = Sprite(config.hammerSmashSize, config.hammerSmashImage)
         
         # figure out position of smash
         # if only one of them do first one, in other case it's moving diagonally so lengths are a bit different
         # player position - half images size to have center of image on center of player, then add or subtract distance between centers
         if abs(movingy - movingx) == 1:
-            self.xpos = playerxpos - (config.hammerSmashSize/2) + (movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
-            self.ypos = playerypos - (config.hammerSmashSize/2) + (movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
+            self.xpos = playerxpos + (movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
+            self.ypos = playerypos + (movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
         elif movingy==0 & movingx==0:
             self.psychYouDontExist = True
         else:
-            self.xpos = round(playerxpos - (config.hammerSmashSize/2) + (1/math.sqrt(2))*(movingx*((config.hammerSmashSize/2)+(config.playerSize/2))))
-            self.ypos = round(playerypos - (config.hammerSmashSize/2) + (1/math.sqrt(2))*(movingy*((config.hammerSmashSize/2)+(config.playerSize/2))))
+            self.xpos = playerxpos + (1/math.sqrt(2))*(movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
+            self.ypos = playerypos + (1/math.sqrt(2))*(movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
 
 
     def update(self) -> config.CoroutineToUpdateEachFrameType:
