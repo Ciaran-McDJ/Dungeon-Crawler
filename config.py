@@ -31,3 +31,10 @@ zombieSpeed = unitLength(0.0001)
 zombieDamage = 1
 zombieImage = "/home/ciaran/Pictures/zombie.png"
 
+
+def isColliding(firstInstance, secondInstance):
+    if abs(firstInstance.xpos-secondInstance.xpos) < (firstInstance.size+secondInstance.size)/2 and abs(firstInstance.ypos-secondInstance.ypos) < (firstInstance.size+secondInstance.size)/2:
+        return True
+    else:
+        return False
+

@@ -1,5 +1,6 @@
-from os import times
-from pprint import pprint
+import collections
+import typing
+import math
 from sprite import Sprite
 from zombie import Zombie
 from updateWeapon import Hammer
@@ -38,7 +39,38 @@ def main():
     # main loop
     while running:
         timeSinceLastRender = GameClock.tick()
-        # move player with wasd
+        # do collision detection using boxes
+        # start by getting size of largest thing and make that the size of the box
+        boxSize = 0
+        for instance in thingsToUpdateEachFrame:
+            if instance.size > boxSize:
+                boxSize = instance.size
+        dictionary: typing.Dict[tuple, typing.List] = collections.defaultdict(list) # dict(key:(), value:List)
+        for instance in thingsToUpdateEachFrame.copy():
+            dictionary[instance.xpos//boxSize,instance.ypos//boxSize].append(instance)
+        for key, instancesToCheck in dictionary.items():
+            keyx,keyy = key
+
+            keysOfGroups:typing.List[tuple] = []
+            # instancesToCheck += dictionary[group+1]
+            for xKeyComponent in [-1,0,1]:
+                for yKeyComponent in [-1,0,1]:
+                    keysOfGroups.append((keyx+xKeyComponent,keyy+yKeyComponent))
+
+
+            # for first in instancesToCheck:
+            #     for second in instancesToCheck:
+            #         if first != second:
+            #             compare(first,second)
+
+
+            for thisCellInstance in instancesToCheck:
+                for group in keysOfGroups:
+                    for otherCellInstance in dictionary[group]:
+                        if thisCellInstance != otherCellInstance:
+                            if config.isColliding(thisCellInstance, otherCellInstance) == True:
+                                print("OMG THERE'S A COLLISION")
+
 
 
         # put images on screen
@@ -81,11 +113,23 @@ def main():
                     movingx = player.isMovingRight-player.isMovingLeft
                     # if same or different then 0, if down then 1, if down then -1
                     movingy = player.isMovingDown-player.isMovingUp
+                    
+                    isRendering = True
+
+                    if abs(movingy - movingx) == 1:
+                        weaponxpos = player.xpos + (movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
+                        weaponypos = player.ypos + (movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
+                    elif movingy==0 & movingx==0:
+                        isRendering = False
+                    else:
+                        weaponxpos = player.xpos + (1/math.sqrt(2))*(movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
+                        weaponypos = player.ypos + (1/math.sqrt(2))*(movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
 
                     # code to start updating weapons
-                    instance = Hammer(1, enemies, player.xpos, player.ypos, movingx, movingy, screen)
-                    thingsToUpdateEachFrame.add(instance)
-                    next(instance.coro, None)
+                    if isRendering == True:    
+                        instance = Hammer(1, enemies, weaponxpos, weaponypos, movingx, movingy, screen)
+                        thingsToUpdateEachFrame.add(instance)
+                        next(instance.coro, None)
                 # add zombie on z press
                 if event.unicode == "z":
                     # new_data = [0, len(enemies)]

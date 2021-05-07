@@ -4,28 +4,22 @@ import config
 import math
 
 class Hammer():
-    def __init__(self, level:float, listOfEnemies, playerxpos:int, playerypos:int, movingx:int, movingy:int, screen: pygame.Surface):
+    def __init__(self, level:float, listOfEnemies, weaponxpos:int, weaponypos:int, movingx:int, movingy:int, screen: pygame.Surface):
 
         self.timeSinceAttack = 0
         self.timeTillGone = 1000
         self.damage = 1
+        self.size = config.hammerSmashSize
         self.screen = screen
         self.coro = self.update()
         self.psychYouDontExist = False
         self.sprite = Sprite(config.hammerSmashSize, config.hammerSmashImage)
-
+        self.xpos = weaponxpos
+        self.ypos = weaponypos
         # figure out position of smash
         # if only one of them do first one, in other case it's moving diagonally so lengths are a bit different
         # player position - half images size to have center of image on center of player, then add or subtract distance between centers
-        if abs(movingy - movingx) == 1:
-            self.xpos = playerxpos + (movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
-            self.ypos = playerypos + (movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
-        elif movingy==0 & movingx==0:
-            self.psychYouDontExist = True
-        else:
-            self.xpos = playerxpos + (1/math.sqrt(2))*(movingx*((config.hammerSmashSize/2)+(config.playerSize/2)))
-            self.ypos = playerypos + (1/math.sqrt(2))*(movingy*((config.hammerSmashSize/2)+(config.playerSize/2)))
-
+        
         for enemy in listOfEnemies:
             if self.psychYouDontExist == False:
                 deltax = abs(self.xpos - enemy.xpos)
