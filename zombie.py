@@ -32,3 +32,7 @@ class Zombie():
             self.ypos += yUnitStep*config.zombieSpeed*inputs.timeSinceLastRender
 
             self.sprite.draw(self.xpos, self.ypos)
+        def die():
+            inputs.enemies.remove(self)
+            return
+        die()

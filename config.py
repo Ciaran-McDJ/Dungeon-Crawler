@@ -13,7 +13,6 @@ Inputs = collections.namedtuple("Inputs", ["timeSinceLastRender", "playerx", "pl
 
 CoroutineToUpdateEachFrameType = typing.Generator[None, Inputs, None]
 
-NamedTuple
 # inputs
 swidth = 500
 sheight = 500
