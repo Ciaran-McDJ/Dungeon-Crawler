@@ -1,4 +1,4 @@
-from math import sqrt
+import math
 from typing import NamedTuple
 import typing
 import pygame
@@ -7,7 +7,7 @@ import collections
 def unitLength(percent):
     return swidth*percent
 def pytheorem(x:int, y:int):
-    return sqrt(x**2 + y**2)
+    return math.sqrt(x**2 + y**2)
 
 Inputs = collections.namedtuple("Inputs", ["timeSinceLastRender", "playerx", "playery", "enemies"])
 
@@ -33,8 +33,7 @@ zombieImage = "/home/ciaran/Pictures/zombie.png"
 
 
 def isColliding(firstInstance, secondInstance):
-    if abs(firstInstance.xpos-secondInstance.xpos) < (firstInstance.size+secondInstance.size)/2 and abs(firstInstance.ypos-secondInstance.ypos) < (firstInstance.size+secondInstance.size)/2:
+    if math.sqrt((firstInstance.xpos-secondInstance.xpos)**2 + (firstInstance.ypos-secondInstance.ypos)**2) < (firstInstance.size+secondInstance.size)/2:
         return True
     else:
         return False
-

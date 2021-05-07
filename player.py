@@ -10,6 +10,7 @@ class Player():
         self.size = config.playerSize
         self.xpos = 0
         self.ypos = 0
+        self.isCollidingRelevant = True
         self.sprite = Sprite(config.playerSize, config.playerImage)
         self.speed = config.playerSpeed
         self.attacking = False

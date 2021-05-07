@@ -4,6 +4,11 @@ import config
 import math
 
 class Hammer():
+    @property 
+    def isCollidingRelevant(self):
+        temp = self.__isCollidingRelevantVariable
+        self.__isCollidingRelevantVariable = False
+        return temp
     def __init__(self, level:float, listOfEnemies, weaponxpos:int, weaponypos:int, movingx:int, movingy:int, screen: pygame.Surface):
 
         self.timeSinceAttack = 0
@@ -16,6 +21,9 @@ class Hammer():
         self.sprite = Sprite(config.hammerSmashSize, config.hammerSmashImage)
         self.xpos = weaponxpos
         self.ypos = weaponypos
+        self.__isCollidingRelevantVariable = True
+
+
         # figure out position of smash
         # if only one of them do first one, in other case it's moving diagonally so lengths are a bit different
         # player position - half images size to have center of image on center of player, then add or subtract distance between centers

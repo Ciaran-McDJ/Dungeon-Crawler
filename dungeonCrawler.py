@@ -45,9 +45,12 @@ def main():
         for instance in thingsToUpdateEachFrame:
             if instance.size > boxSize:
                 boxSize = instance.size
-        dictionary: typing.Dict[tuple, typing.List] = collections.defaultdict(list) # dict(key:(), value:List)
+        dictionary: typing.Dict[tuple, typing.List] = {}
         for instance in thingsToUpdateEachFrame.copy():
-            dictionary[instance.xpos//boxSize,instance.ypos//boxSize].append(instance)
+            if instance.isCollidingRelevant == True:
+                key = (instance.xpos//boxSize,instance.ypos//boxSize)
+                dictionary.setdefault(key, [])
+                dictionary[key].append(instance)
         for key, instancesToCheck in dictionary.items():
             keyx,keyy = key
 
@@ -55,21 +58,68 @@ def main():
             # instancesToCheck += dictionary[group+1]
             for xKeyComponent in [-1,0,1]:
                 for yKeyComponent in [-1,0,1]:
-                    keysOfGroups.append((keyx+xKeyComponent,keyy+yKeyComponent))
-
-
-            # for first in instancesToCheck:
-            #     for second in instancesToCheck:
-            #         if first != second:
-            #             compare(first,second)
+                    newKey = (keyx+xKeyComponent,keyy+yKeyComponent)
+                    if newKey in dictionary.keys():
+                        keysOfGroups.append(newKey)
 
 
             for thisCellInstance in instancesToCheck:
                 for group in keysOfGroups:
                     for otherCellInstance in dictionary[group]:
+                        # TO DO make it so I don't need to check every time (only if same cell?)
                         if thisCellInstance != otherCellInstance:
                             if config.isColliding(thisCellInstance, otherCellInstance) == True:
+                                # TO DO make them do stuff
                                 print("OMG THERE'S A COLLISION")
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # dictionary: typing.Dict[tuple, typing.List] = collections.defaultdict(list) # dict(key:(), value:List)
+        # for instance in thingsToUpdateEachFrame.copy():
+        #     dictionary[instance.xpos//boxSize,instance.ypos//boxSize].append(instance)
+        # for key, instancesToCheck in dictionary.items():
+        #     keyx,keyy = key
+
+        #     keysOfGroups:typing.List[tuple] = []
+        #     # instancesToCheck += dictionary[group+1]
+        #     for xKeyComponent in [-1,0,1]:
+        #         for yKeyComponent in [-1,0,1]:
+        #             keysOfGroups.append((keyx+xKeyComponent,keyy+yKeyComponent))
+
+
+        #     # for first in instancesToCheck:
+        #     #     for second in instancesToCheck:
+        #     #         if first != second:
+        #     #             compare(first,second)
+
+
+        #     for thisCellInstance in instancesToCheck:
+        #         for group in keysOfGroups:
+        #             for otherCellInstance in dictionary[group]:
+        #                 if thisCellInstance != otherCellInstance:
+        #                     if config.isColliding(thisCellInstance, otherCellInstance) == True:
+        #                         print("OMG THERE'S A COLLISION")
+
+
+
+
+
+
+
+
+
+
+
 
 
 

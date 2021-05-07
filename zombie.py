@@ -15,6 +15,7 @@ class Zombie():
         self.health = config.zombieHealth
         self.damage = config.zombieDamage
         self.sprite = Sprite(config.zombieSize, config.zombieImage)
+        self.isCollidingRelevant = True
 
     def update(self) -> config.CoroutineToUpdateEachFrameType:
 
