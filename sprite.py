@@ -1,6 +1,7 @@
 import pygame
 
 class Sprite():
+    "ciarans sprite class"
     default_screen: pygame.Surface = None
     def __init__(self, size:int, imageLink:str):
         self.image = pygame.transform.scale(pygame.image.load(imageLink), (size,size))

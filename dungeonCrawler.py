@@ -4,7 +4,8 @@ import math
 from sprite import Sprite
 from zombie import Zombie
 from updateWeapon import Hammer
-import pygame.draw
+import pygame # python works when only importing a submodule, but apparently pylance is dumb enough to require this import
+import pygame.draw, pygame.display, pygame.image, pygame.surface
 from player import Player
 import config
 
@@ -18,10 +19,6 @@ def main():
     logo: pygame.Surface = pygame.image.load("/home/ciaran/Downloads/token_5.png")
     pygame.display.set_icon(logo)
     pygame.display.set_caption("my test game")
-
-    # create a surface on screen
-    screen: pygame.Surface = pygame.display.set_mode((config.swidth,config.sheight))
-    Sprite.default_screen = screen 
 
     #making some variables
     player = Player()
@@ -73,58 +70,8 @@ def main():
                                 print("OMG THERE'S A COLLISION")
 
 
-
-
-
-
-
-
-
-
-
-
-
-        # dictionary: typing.Dict[tuple, typing.List] = collections.defaultdict(list) # dict(key:(), value:List)
-        # for instance in thingsToUpdateEachFrame.copy():
-        #     dictionary[instance.xpos//boxSize,instance.ypos//boxSize].append(instance)
-        # for key, instancesToCheck in dictionary.items():
-        #     keyx,keyy = key
-
-        #     keysOfGroups:typing.List[tuple] = []
-        #     # instancesToCheck += dictionary[group+1]
-        #     for xKeyComponent in [-1,0,1]:
-        #         for yKeyComponent in [-1,0,1]:
-        #             keysOfGroups.append((keyx+xKeyComponent,keyy+yKeyComponent))
-
-
-        #     # for first in instancesToCheck:
-        #     #     for second in instancesToCheck:
-        #     #         if first != second:
-        #     #             compare(first,second)
-
-
-        #     for thisCellInstance in instancesToCheck:
-        #         for group in keysOfGroups:
-        #             for otherCellInstance in dictionary[group]:
-        #                 if thisCellInstance != otherCellInstance:
-        #                     if config.isColliding(thisCellInstance, otherCellInstance) == True:
-        #                         print("OMG THERE'S A COLLISION")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         # put images on screen
-        screen.fill("blue")
+        config.screen.fill("blue")
 
         for instance in thingsToUpdateEachFrame.copy():
             try:
@@ -177,7 +124,7 @@ def main():
 
                     # code to start updating weapons
                     if isRendering == True:    
-                        instance = Hammer(1, enemies, weaponxpos, weaponypos, movingx, movingy, screen)
+                        instance = Hammer(1, enemies, weaponxpos, weaponypos, movingx, movingy, config.screen)
                         thingsToUpdateEachFrame.add(instance)
                         next(instance.coro, None)
                 # add zombie on z press

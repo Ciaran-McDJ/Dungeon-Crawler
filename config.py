@@ -1,4 +1,5 @@
 import math
+from sprite import Sprite
 from typing import NamedTuple
 import typing
 import pygame
@@ -30,6 +31,10 @@ zombieSize = round(unitLength(0.1))
 zombieSpeed = unitLength(0.0001)
 zombieDamage = 1
 zombieImage = "/home/ciaran/Pictures/zombie.png"
+
+# Create the main screen
+screen: pygame.Surface = pygame.display.set_mode((swidth,sheight))
+Sprite.default_screen = screen 
 
 
 def isColliding(firstInstance, secondInstance):
