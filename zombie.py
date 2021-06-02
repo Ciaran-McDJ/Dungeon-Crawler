@@ -1,39 +1,44 @@
+from pygame import Vector2
+from enemySuperClass import EnemyClass
 from sprite import Sprite
 import typing
 import pygame.transform
+import pygame.draw
 import config
+import variables
 import math
 import random
 
-class Zombie():
+class Zombie(EnemyClass):
     def __init__(self, level:float):
-        # TO DO give them random positions
-        self.coro = self.update()
-        self.xpos = random.random()*config.swidth
-        self.ypos = random.random()*config.sheight
-        self.size = config.zombieSize
-        self.health = config.zombieHealth
-        self.damage = config.zombieDamage
-        self.sprite = Sprite(config.zombieSize, config.zombieImage)
-        self.isCollidingRelevant = True
+        super().__init__(
+            # TO DO make it so they don't spawn on the player
+            pos=Vector2(random.random()*100, random.random()*100), 
+            size=config.zombieSize, 
+            velocity=Vector2(), 
+            image=config.zombieImage,
+            health=config.zombieHealth, 
+            damage=config.zombieDamage
+        )
 
-    def update(self) -> config.CoroutineToUpdateEachFrameType:
+    def update(self, timeSinceLastRender:float):
 
-        while self.health > 0:
-            inputs = yield
-            # mutable_shared_data_structure_that_changes_can_be_visible_outside[0] += 1
-            deltax = inputs.playerx - self.xpos
-            deltay = inputs.playery - self.ypos
-            deltaTotal = config.pytheorem(deltax, deltay)
+        if self.health > 0:
+
+            deltapos:Vector2 = variables.playerRef.pos - self.pos
             
-            xUnitStep = deltax/deltaTotal
-            yUnitStep = deltay/deltaTotal
+            # divide x and y each by the total distance, so that the velocity vector has a magnitude of 1. Then multiply by speed
+            if deltapos.magnitude != 0:
+                self.velocity = (deltapos/deltapos.magnitude())*config.zombieSpeed
+            else: self.velocity = (0,0)
 
-            self.xpos += xUnitStep*config.zombieSpeed*inputs.timeSinceLastRender
-            self.ypos += yUnitStep*config.zombieSpeed*inputs.timeSinceLastRender
+            # Make alpha 0 when hit and renew to represent cooldown
+            self.hurtCooldownTime += timeSinceLastRender
+            self.sprite.image.set_alpha((self.hurtCooldownTime/config.enemyHurtCooldownTime)*255)
 
-            self.sprite.draw(self.xpos, self.ypos)
-        def die():
-            inputs.enemies.remove(self)
-            return
-        die()
+            super().update(timeSinceLastRender)
+
+            return config.EntityState.Live
+
+        else: return config.EntityState.Dead
+        # TO DO make dead zombie animation

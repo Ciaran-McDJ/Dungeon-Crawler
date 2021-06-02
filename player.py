@@ -1,65 +1,65 @@
-from sprite import Sprite
+from hammer import Hammer
+from pygame import Vector2, time
+from playerSuperClass import PlayerClass
 from typing import TYPE_CHECKING
 import pygame.transform
 import config
+import variables
 
-class Player():
+class Player(PlayerClass):
     def __init__(self):
-        self.coro = self.update()
-        self.health = config.playerHealth
-        self.size = config.playerSize
-        self.xpos = 0
-        self.ypos = 0
-        self.isCollidingRelevant = True
-        self.sprite = Sprite(config.playerSize, config.playerImage)
-        self.speed = config.playerSpeed
+        super().__init__(
+            pos=Vector2(0,0),
+            size=config.playerSize,
+            velocity=Vector2(0,0),
+            image=config.playerImage,
+            health=config.playerHealth,
+            weapon=Hammer,
+            speed = config.playerSpeed,
+            weaponCooldownMax = config.weaponCooldown
+        )
         self.attacking = False
-        self.weapon = Weapon("hammer")
+        variables.registerPlayer(self)
 
         self.isMovingLeft = False
-        self.movingLeftClock = pygame.time.Clock()
         self.isMovingRight = False
-        self.movingRightClock = pygame.time.Clock()
         self.isMovingUp = False
-        self.movingUpClock = pygame.time.Clock()
         self.isMovingDown = False
-        self.movingDownClock = pygame.time.Clock()
 
 
-    def update(self) -> config.CoroutineToUpdateEachFrameType:
-
-        while self.health > 0:
+    def update(self, timeSinceLastRender:float):
+        if self.health > 0:
+            self.velocity = Vector2(0,0)
             if self.isMovingLeft == True:
-                self.xpos -= self.speed*self.movingLeftClock.tick()
+                self.velocity.x -= 1*self.speed
             if self.isMovingRight == True:
-                self.xpos += self.speed*self.movingRightClock.tick()
+                self.velocity.x += 1*self.speed
             if self.isMovingUp == True:
-                self.ypos -= self.speed*self.movingUpClock.tick()
+                self.velocity.y -= 1*self.speed
             if self.isMovingDown == True:
-                self.ypos += self.speed*self.movingDownClock.tick()
+                self.velocity.y += 1*self.speed
 
-            inputs = yield
-            for enemy in inputs.enemies:
-                deltax = abs(self.xpos - enemy.xpos)
-                deltay = abs(self.ypos - enemy.ypos)
-                distance = config.pytheorem(deltax, deltay)
-                radiusesSize = (enemy.size + self.size)/2
-                if distance<radiusesSize:
-                    self.health -= enemy.damage
+            self.hurtCooldownTime += timeSinceLastRender
+            self.weaponCooldownTime += timeSinceLastRender
+            self.sprite.image.set_alpha((self.hurtCooldownTime/config.defaultPlayerHurtCoolDown)*255)
 
-            self.sprite.draw(self.xpos, self.ypos)
+            super().update(timeSinceLastRender)
+            return config.EntityState.Live
 
+        else: return config.EntityState.Dead
 
-
+    def doAttack(self, movingx, movingy):
+        return self.weapon(level=1, movingx=movingx, movingy=movingy)
 
 
-class Weapon():
-    def __init__(self, weaponType):
-        # TO DO - make it so there's multiple weapons and specify what they are with types
-        self.type = "hammer"
-        if weaponType == "hammer":
-            self.cooldown = 1
-            self.damage = 1
+# I think I can  get rid of this
+# class Weapon():
+#     def __init__(self, weaponType):
+#         # TO DO - make it so there's multiple weapons and specify what they are with types
+#         self.type = "hammer"
+#         if weaponType == "hammer":
+#             self.cooldown = 1
+#             self.damage = 1
 
 
 
