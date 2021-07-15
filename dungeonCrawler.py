@@ -38,6 +38,7 @@ def main():
     GameClock = pygame.time.Clock()
     myClocks.add(GameClock)
 
+    roomCleared = False
     # TEMP I will remove this once I have rooms spawn enemies
     zombieSpawningTimer = 0
     zombieSpawningTimerClock = pygame.time.Clock()
@@ -92,7 +93,10 @@ def main():
             entityState = instance.update(timeSinceLastRender)
             if entityState == config.EntityState.Dead:
                 thingsToUpdateEachFrame.remove(instance)
-            
+        
+        if roomCleared == True:
+            pass
+            # Make doors
 
 
         pygame.display.update()

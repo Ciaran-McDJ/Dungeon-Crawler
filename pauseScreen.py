@@ -6,9 +6,8 @@ import variables
 
 def activatePauseScreen():
     pauseScreenActive = True
-    optionsScreenActive = False
     # TO DO, break the link between these variables
-    gameScreen = variables.mainScreen
+    gameScreen = variables.mainScreen.copy()
     # This is to make a light grey layer over the screen
     myGreySurface = pygame.Surface((variables.mainScreen.get_width(),variables.mainScreen.get_height()))
     myGreySurface.fill("grey")
@@ -35,12 +34,6 @@ def activatePauseScreen():
         pygame.display.update()
 
 
-        # Check to see if any buttons have been clicked
-        if optionsScreenActive == True:
-            activateOptionsPauseScreen(gameScreen)
-            pauseScreenActive = False
-
-
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -50,4 +43,4 @@ def activatePauseScreen():
                 if event.unicode == "\x1b":
                     pauseScreenActive = False
                 if event.unicode == "o":
-                    optionsScreenActive = True
+                    activateOptionsPauseScreen(gameScreen)

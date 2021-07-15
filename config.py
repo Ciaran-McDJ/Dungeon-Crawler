@@ -43,6 +43,8 @@ zombieSize = 10
 zombieSpeed = 0.01
 zombieDamage = 1
 zombieImage = "/home/ciaran/Pictures/zombie.png"
+# Distances between player center and enemy center
+minimumSpawnDistanceFromPlayer = 5
 
 # PauseScreen
 # 0 is invisible, 255 is completely grey

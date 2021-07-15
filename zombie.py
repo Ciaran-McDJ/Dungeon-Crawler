@@ -11,6 +11,10 @@ import random
 
 class Zombie(EnemyClass):
     def __init__(self, level:float):
+        pos = Vector2(random.random()*100, random.random()*100)
+        while abs(pos.x-variables.playerRef.pos.x) < config.minimumSpawnDistanceFromPlayer and abs(pos.y-variables.playerRef.pos.y) < config.minimumSpawnDistanceFromPlayer:
+            pos = Vector2(random.random()*100, random.random()*100)
+            print("wow a zombie was about to spawn on you")
         super().__init__(
             # TO DO make it so they don't spawn on the player
             pos=Vector2(random.random()*100, random.random()*100), 

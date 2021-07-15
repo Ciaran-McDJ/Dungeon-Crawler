@@ -2,7 +2,7 @@ import pygame
 import pygame.draw
 import config
 import variables
-
+# Template to make a pause screen
 def activateThisPauseScreen(gameScreenState:pygame.Surface):
     thisPauseScreenActive = True
     variables.mainScreen.blit(gameScreenState, (0,0))
