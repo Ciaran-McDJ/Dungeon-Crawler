@@ -13,6 +13,8 @@ import config
 import variables
 import pygame.font
 
+#THERE IS A DIVISION BY 0 ERROR HAPPENING SOMEWHERE - FIX IT!!! (I think when zombie is directly on top of character (check zombie movement))
+
 # define a main function
 def main():
    
@@ -27,7 +29,7 @@ def main():
 
 
 
-    # TO DO add type t this list to specify it's a list of Entities
+    # TO DO add type to this list to specify it's a list of Entities
     thingsToUpdateEachFrame = set()
     myClocks = set()
 
