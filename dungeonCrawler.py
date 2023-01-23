@@ -8,9 +8,9 @@ from zombie import Zombie
 from hammer import Hammer
 import pygame # python works when only importing a submodule, but apparently pylance is dumb enough to require this import
 import pygame.draw, pygame.display, pygame.image, pygame.surface
+import variables
 from player import Player
 import config
-import variables
 import pygame.font
 
 #THERE IS A DIVISION BY 0 ERROR HAPPENING SOMEWHERE - FIX IT!!! (I think when zombie is directly on top of character (check zombie movement))
